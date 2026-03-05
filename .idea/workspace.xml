@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45802dbb-f75f-448e-9144-61cd792830f5" name="Changes" comment="" />
+    <list default="true" id="45802dbb-f75f-448e-9144-61cd792830f5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/adrs-architecture-decision-records.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/adrs-architecture-decision-records.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,9 +20,24 @@
       <entry key="_/Users/iqwrwq/Projects/java-wissensmap" value="3AXyh6lBNa3KZlFCpZGa9A7xmja" />
     </persistenceIdMap>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "dev-arts-de"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/dev-arts-de/dev-arts-java-wissensdatenbank.git",
+    "accountId": "ad2a53d2-4898-479e-99f4-db9c9f4e6e73"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="3AXyh6lBNa3KZlFCpZGa9A7xmja" />
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
@@ -31,6 +51,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/Users/iqwrwq/Projects/java-wissensmap",
@@ -80,6 +101,7 @@
       <option name="presentableId" value="Default" />
       <updated>1772753326881</updated>
       <workItem from="1772753327781" duration="380000" />
+      <workItem from="1772753728418" duration="1440000" />
     </task>
     <servers />
   </component>
