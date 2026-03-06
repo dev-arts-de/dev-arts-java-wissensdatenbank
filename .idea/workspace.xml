@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45802dbb-f75f-448e-9144-61cd792830f5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/backlog-refinement.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/backlog-refinement.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +100,7 @@
       <updated>1772753326881</updated>
       <workItem from="1772753327781" duration="380000" />
       <workItem from="1772753728418" duration="1979000" />
-      <workItem from="1772792784324" duration="1460000" />
+      <workItem from="1772792784324" duration="2100000" />
     </task>
     <servers />
   </component>
