@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45802dbb-f75f-448e-9144-61cd792830f5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/adrs-architecture-decision-records.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/adrs-architecture-decision-records.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/backlog-refinement.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/topics/agile-arbeitsweise/backlog-refinement.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,18 +21,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "dev-arts-de"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;dev-arts-de&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/dev-arts-de/dev-arts-java-wissensdatenbank.git",
-    "accountId": "ad2a53d2-4898-479e-99f4-db9c9f4e6e73"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/dev-arts-de/dev-arts-java-wissensdatenbank.git&quot;,
+    &quot;accountId&quot;: &quot;ad2a53d2-4898-479e-99f4-db9c9f4e6e73&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -49,6 +47,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main",
@@ -101,7 +100,8 @@
       <option name="presentableId" value="Default" />
       <updated>1772753326881</updated>
       <workItem from="1772753327781" duration="380000" />
-      <workItem from="1772753728418" duration="1440000" />
+      <workItem from="1772753728418" duration="1979000" />
+      <workItem from="1772792784324" duration="1460000" />
     </task>
     <servers />
   </component>
