@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="45802dbb-f75f-448e-9144-61cd792830f5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/topics/java-grundlagen/primitive-datentypen-vs-referenztypen.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/topics/java-grundlagen/primitive-datentypen-vs-referenztypen.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/topics/java-grundlagen/jdk-vs-jre-vs-jvm.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/topics/java-grundlagen/jdk-vs-jre-vs-jvm.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +102,7 @@
       <workItem from="1772753327781" duration="380000" />
       <workItem from="1772753728418" duration="1979000" />
       <workItem from="1772792784324" duration="7493000" />
-      <workItem from="1772880164587" duration="392000" />
+      <workItem from="1772880164587" duration="1690000" />
     </task>
     <servers />
   </component>
