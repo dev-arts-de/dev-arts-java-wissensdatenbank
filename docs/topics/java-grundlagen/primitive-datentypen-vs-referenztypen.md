@@ -6,7 +6,7 @@ outline: deep
 
 <div class="meta">
   <span class="difficulty easy">🟢 Einstieg</span>
-  <span class="status">📝 Noch nicht bearbeitet</span>
+  <span class="status">Bearbeitet</span>
 </div>
 
 ---
