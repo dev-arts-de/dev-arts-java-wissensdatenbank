@@ -5,7 +5,7 @@ outline: deep
 # ADRs – Architecture Decision Records
 
 <div class="meta">
-  <span class="difficulty medium">🟡 Mittel</span>
+  <span class="difficulty easy">🟢 Einfach</span>
   <span class="status">Bearbeitet ☑️</span>
 </div>
 
@@ -13,94 +13,109 @@ outline: deep
 
 ## Notizen
 
-Architecture Decision Records (ADRs) sind strukturierte Dokumente, die wichtige technische Entscheidungen in einem Projekt dokumentieren. Sie dienen dazu, den Grund, Kontext und Konsequenzen von Architekturentscheidungen festzuhalten. ADRs sind ein essentielles Werkzeug in agilen Teams, um Wissen zu bewahren und neue Teamkollegen schnell einzuarbeiten.
+Architecture Decision Records (ADRs) sind strukturierte Dokumente, die wichtige architektonische Entscheidungen in einem Softwareprojekt festhalten. Sie dienen als Kommunikationsmittel zwischen Entwicklern und dokumentieren das "Warum" hinter technischen Entscheidungen, nicht nur das "Was". ADRs sind besonders wertvoll in agilen Teams, da sie schnell erstellt und aktualisiert werden können, ohne aufwändige Prozesse zu erfordern.
 
-Ein ADR besteht typischerweise aus: Status (Proposed, Accepted, Deprecated), Kontext (Problemstellung und Einflussfaktoren), Entscheidung (die getroffene Lösung), Konsequenzen (Vor- und Nachteile) und manchmal Alternativen. Diese Struktur ermöglicht es, nachzuvollziehen, warum eine bestimmte technische Richtung gewählt wurde und nicht eine andere.
+Ein typisches ADR enthält: Titel, Status (Proposed/Accepted/Deprecated), Kontext (warum die Entscheidung nötig war), Decision (was entschieden wurde), Consequences (Auswirkungen), und oft auch Alternativen, die berücksichtigt wurden. Diese minimale Struktur ermöglicht schnelle Dokumentation, während sie dennoch alle wichtigen Informationen erfasst.
 
-ADRs werden häufig im Repository abgelegt (z.B. im `/docs/adr` Verzeichnis) und mit Versionskontrolle verwaltet. Dies macht sie zu einem lebenden Dokument, das mit dem Projekt wächst. Sie sind besonders wertvoll für Teams, die remote arbeiten oder hohe Fluktuation haben, da sie institutionelles Wissen sichern und Diskussionen transparent dokumentieren.
+ADRs ermöglichen es neuen Team-Mitgliedern, die Architektur-Geschichte des Projekts zu verstehen, ohne erfahrene Entwickler fragen zu müssen. Sie verhindern auch, dass frühere Entscheidungen vergessen werden und später irrtümlich rückgängig gemacht werden. In verteilten agilen Teams sind ADRs ein asynchrones Kommunikationsmittel, das Wissen bewahrt.
+
+Die Verwendung von ADRs fördert eine Kultur der bewussten Entscheidungsfindung. Sie zwingen Teams, ihre Entscheidungen zu überdenken und zu dokumentieren, bevor sie implementiert werden. Dies führt oft zu besseren Entscheidungen und einer klareren Kommunikation von Anfang an.
 
 ## Code-Beispiele
 
 ```java
-// ADR Template (als Markdown-Datei im Projekt)
-// docs/adr/001-use-spring-boot-framework.md
+/**
+ * ADR-001: Verwendung von Dependency Injection für Service-Management
+ * 
+ * Status: Accepted
+ * 
+ * Context:
+ * Das Projekt wächst und hat mehrere Services mit komplexen Abhängigkeiten.
+ * Die manuelle Verwaltung von Abhängigkeiten wird zunehmend fehleranfällig.
+ * 
+ * Decision:
+ * Wir nutzen Spring Dependency Injection Container für die Verwaltung
+ * aller Services und ihre Abhängigkeiten.
+ * 
+ * Consequences:
+ * + Reduzierter Boilerplate-Code
+ * + Einfacheres Unit-Testing durch Mocking
+ * - Zusätzliche Spring-Abhängigkeit
+ * - Steile Lernkurve für neue Team-Mitglieder
+ */
 
-# ADR 001: Spring Boot als Framework verwenden
-
-## Status
-Accepted
-
-## Kontext
-Das Team benötigt ein Java Web Framework mit hoher Produktivität 
-und großem Ökosystem. Zu diesem Zeitpunkt gab es Diskussionen 
-zwischen Spring Boot, Quarkus und traditionellem Spring.
-
-## Entscheidung
-Wir verwenden Spring Boot 3.x als primäres Framework für 
-Microservices und REST-APIs.
-
-## Konsequenzen
-- Positive: Schnelle Entwicklung, große Community, umfangreiche 
-  Dependencies, gute Dokumentation
-- Negative: Größere JAR-Dateien, höherer Memory-Footprint bei 
-  traditionellen JVMs (gelöst durch GraalVM)
-- Risiko: Vendor-Lock-in minimiert durch standardisierte Interfaces
-
-## Alternativen
-- Quarkus: Zu dem Zeitpunkt weniger ausgereift, aber bessere 
-  Cloud-Optimierung
-- Micronaut: Kleineres Ökosystem, aber schneller startup-time
-```
-
-```java
-// Praktisches Beispiel: Dokumentierung einer Spring-Konfigurationsentscheidung
-public class ApplicationConfig {
+@Configuration
+public class ServiceConfiguration {
     
-    /**
-     * ADR-002: Dependency Injection über Constructor Injection
-     * 
-     * Kontext: Team benötigte Klarheit über bevorzugte DI-Methode
-     * Entscheidung: Constructor Injection statt Field Injection
-     * Konsequenzen: Bessere Testbarkeit, explizite Dependencies, 
-     *               unmögliche zirkuläre Dependencies
-     */
-    private final UserRepository userRepository;
-    private final NotificationService notificationService;
-    
-    // Constructor Injection (empfohlen)
-    public ApplicationConfig(UserRepository userRepository, 
-                            NotificationService notificationService) {
-        this.userRepository = userRepository;
-        this.notificationService = notificationService;
+    @Bean
+    public UserRepository userRepository() {
+        return new JpaUserRepository();
     }
     
-    // Nicht empfohlen: Field Injection
-    // @Autowired private UserRepository userRepository;
+    @Bean
+    public UserService userService(UserRepository repository) {
+        return new UserService(repository);
+    }
+}
+
+/**
+ * ADR-002: Verwendung von JPA für Data Access
+ * 
+ * Status: Accepted
+ * 
+ * Context:
+ * Wir benötigen eine Datenschicht, die verschiedene Datenbanken unterstützt.
+ * 
+ * Decision:
+ * JPA mit Hibernate als Standard ORM-Framework.
+ * 
+ * Consequences:
+ * + DB-Unabhängigkeit
+ * + Automatisches Mapping zwischen Objekten und Tabellen
+ * - Performance-Overhead durch ORM
+ * - N+1 Query Problem muss beachtet werden
+ */
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(name = "email", unique = true)
+    private String email;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders;
 }
 ```
 
 ## Wichtige Punkte
 
-- ADRs dokumentieren das **Warum**, nicht nur das **Was** einer technischen Entscheidung
-- ADRs sollten **kurz und prägnant** sein (eine bis zwei Seiten), um tatsächlich gelesen zu werden
-- Der **Status** (Proposed, Accepted, Deprecated) ist crucial für die Verwaltung von technischen Schulden
-- ADRs fördern **Transparenz** und ermöglichen asynchrone Diskussionen in verteilten Teams
-- Regelmäßige **Review und Archivierung** alter ADRs halten das System wartbar und relevant
+- ADRs dokumentieren architektonische Entscheidungen mit Kontext, Entscheidung und Konsequenzen
+- Sie bewahren das Wissen über "Warum"-Entscheidungen und verhindern Wissens-Verlust
+- ADRs sollten kurz, prägnant und zeitnah erstellt werden (idealerweise max. 1-2 Seiten)
+- Sie dienen als Kommunikationsmittel für verteilte und asynchrone Teams in agilen Projekten
+- Alte oder überholte ADRs sollten als "Deprecated" markiert werden, nicht gelöscht, um die Geschichte zu bewahren
 
 ## Interview-Fragen
 
-### Warum sind ADRs wichtiger in agilen Teams als in Wasserfall-Projekten?
-In agilen Teams mit hoher Änderungshäufigkeit und möglicherweise verteilten Strukturen ist das schnelle Verständnis von Entscheidungen kritisch. ADRs ermöglichen asynchrone Kommunikation, reduzieren Wiederholungsdiskussionen und bewahren Kontext, wenn Sprints schnell voranschreiten. In Wasserfall-Projekten mit linearen Phasen ist dieser Bedarf geringer.
+### Wann sollte ein Team ein ADR erstellen?
+
+Ein ADR sollte erstellt werden, wenn eine Entscheidung architektonischer Natur ist, die Auswirkungen auf mehrere Team-Mitglieder hat, langfristig relevant bleibt oder zukünftige Entscheidungen beeinflusst. Beispiele: Wahl des Web-Frameworks, Datenbanktyp, API-Design-Ansatz, oder Sicherheitsarchitektur. Kleine, kurzfristige technische Entscheidungen benötigen keine ADRs.
 
 ---
 
-### Wie unterscheidet sich ein ADR von klassischer technischer Dokumentation?
-ADRs dokumentieren **Entscheidungsprozesse** (Kontext, Alternativen, Konsequenzen), während technische Dokumentation das **aktuelle System** beschreibt. ADRs sind entscheidungsorientiert und bewahren historischen Kontext; Dokumentation ist deskriptiv und gegenwartsorientiert. Oft werden ADRs später in allgemeine Architektur-Dokumentation integriert.
+### Wie unterscheiden sich ADRs von klassischer Architekturdokumentation?
+
+ADRs sind leichter und agiler als klassische Architekturdokumentation. Sie dokumentieren einzelne Entscheidungen inkl. des Kontexts und der Alternativen, während klassische Dokumentation die Gesamtarchitektur beschreibt. ADRs können schnell gepflegt werden und wachsen organisch mit dem Projekt, während klassische Dokumentation oft veraltet.
 
 ---
 
-### Wie behandelt man veraltete ADRs (deprecated Status)?
-Veraltete ADRs sollten **nicht gelöscht**, sondern auf Status "Deprecated" oder "Superseded" gesetzt werden mit Referenz zur neuen ADR. Dies bewahrt die Entscheidungsgeschichte und erklärt, warum ursprüngliche Lösungen verlassen wurden. Dies ist wertvoll, um zu verhindern, dass alte Debatten erneut geführt werden.
+### Wie behandelt man ein ADR, das sich später als falsch herausstellt?
+
+Man markiert das ADR als "Deprecated" und erstellt ein neues ADR, das die Änderung dokumentiert. Das neue ADR sollte auf das alte referenzieren und begründen, warum die ursprüngliche Entscheidung revidiert wurde. Dies bewahrt die Projekt-Historie und erklärt zukünftigen Entwicklern, warum die frühere Entscheidung nicht mehr gültig ist.
 
 <style>
 .meta {
