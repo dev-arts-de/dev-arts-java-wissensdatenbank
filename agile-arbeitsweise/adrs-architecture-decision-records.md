@@ -13,97 +13,83 @@ outline: deep
 
 ## Notizen
 
-Architecture Decision Records (ADRs) sind strukturierte Dokumente, die architektonische Entscheidungen in Softwareprojekten festhalten. Sie dienen als Kommunikationsmittel zwischen Team-Mitgliedern und dokumentieren nicht nur die getroffene Entscheidung, sondern auch die Gründe, Alternativen und Konsequenzen dahinter. ADRs helfen dabei, Wissen zu bewahren und verhindern, dass bereits getroffene Entscheidungen später erneut hinterfragt werden.
+Architecture Decision Records (ADRs) sind strukturierte Dokumente, die wichtige architektonische Entscheidungen in Softwareprojekten festhalten. Sie dienen als Kommunikationsmittel zwischen Entwicklern, um zu dokumentieren, warum eine bestimmte technische Entscheidung getroffen wurde, welche Alternativen es gab und welche Konsequenzen diese Entscheidung mit sich bringt. ADRs sind besonders wertvoll in agilen Teams, da sie das implizite Wissen explizit machen und neuen Teamkollegen helfen, die Projektgeschichte zu verstehen.
 
-Ein ADR besteht typischerweise aus Abschnitten wie Titel, Status, Kontext, Entscheidung, Begründung, Konsequenzen und eventuellen Alternativen. Diese Struktur ermöglicht es neuen Team-Mitgliedern, schnell die Hintergründe von Architekturentscheidungen zu verstehen. ADRs werden oft in einem Git-Repository versioniert und sind somit Teil der Projektgeschichte.
+Ein ADR besteht typischerweise aus folgenden Abschnitten: Status (Proposed, Accepted, Deprecated), Kontext (warum die Entscheidung notwendig war), Entscheidung (was wurde beschlossen), Konsequenzen (Vor- und Nachteile) und manchmal Alternativen. Die Nummernierung (ADR-001, ADR-002, etc.) ermöglicht einfache Referenzierung und Versionskontrolle im Repository. ADRs sind bewusst knapp gehalten, um die Adoption zu fördern und schnelle Entscheidungsfindung nicht zu behindern.
 
-In agilen Projekten sind ADRs besonders wertvoll, da sie kontinuierliche Entscheidungen dokumentieren und gleichzeitig flexibel bleiben. Sie erlauben es Teams, Entscheidungen zu überprüfen (Status: Deprecated, Superseded) und neue Erkenntnisse einzuarbeiten. Dies fördert eine Kultur der transparenten Kommunikation und informed Decision Making.
+Im Kontext agiler Entwicklung ermöglichen ADRs eine bessere Zusammenarbeit und Wissensmanagement. Sie unterstützen die Diskussion vor der Entscheidung, dokumentieren Rationale und ermöglichen es Teams, frühere Entscheidungen zu überdenken, wenn sich die Anforderungen ändern. ADRs fördern auch die Transparenz und Nachvollziehbarkeit technischer Entscheidungen, was besonders in verteilten Teams wichtig ist.
 
 ## Code-Beispiele
 
 ```java
-// ADR als Markdown-Datei: adr/0001-use-spring-boot.md
-
+// ADR-001: Use Spring Boot for REST API Development
 /*
-# ADR 0001: Verwendung von Spring Boot für REST-APIs
+Status: Accepted
+Date: 2024-01-15
 
-## Status
-Angenommen
+Context:
+Das Projekt benötigt ein robustes Framework für die REST-API-Entwicklung.
+Die Anforderungen umfassen schnelle Entwicklung, gute Community-Unterstützung 
+und einfache Konfiguration.
 
-## Kontext
-Das Projekt benötigt ein Framework für die Entwicklung von REST-APIs.
-Wir haben verschiedene Optionen evaluiert: Spring Boot, Quarkus und Micronaut.
+Decision:
+Wir werden Spring Boot als Framework für die REST-API-Entwicklung nutzen.
 
-## Entscheidung
-Wir verwenden Spring Boot als Framework für unsere REST-APIs.
+Consequences:
++ Positive: Schnelle Entwicklung, große Ecosystem, wenig Boilerplate-Code
++ Positive: Einfache Integration mit Datenbanken und anderen Services
+- Negative: Zusätzliche Abhängigkeit in der Deployment-Pipeline
+- Negative: Learning Curve für neue Teamkollegen
 
-## Begründung
-- Größte Community und beste Dokumentation
-- Umfangreiches Ökosystem (Spring Data, Spring Security, etc.)
-- Team verfügt über Erfahrung mit Spring Boot
-- Hervorragende IDE-Unterstützung
-
-## Konsequenzen
-+ Schnellere Entwicklung durch bewährte Patterns
-+ Gute Skalierbarkeit
-- Größere JAR-Dateien im Vergleich zu Quarkus
-- Längere Startup-Zeit in Serverless-Umgebungen
-
-## Alternativen
-- Quarkus: Bessere Performance, weniger etabliert
-- Micronaut: Gute Kompilierungsoptimierung, kleineres Ökosystem
+Alternatives:
+1. Quarkus: Bessere Performance, weniger Memory-Footprint
+2. Micronaut: Ähnliche Vorteile wie Quarkus, weniger etabliert
 */
 
-// Beispiel: ADR im Projekt strukturieren
-public class ADRRegistry {
-    /*
-    adr/
-    ├── 0001-use-spring-boot.md
-    ├── 0002-use-postgresql-for-persistence.md
-    ├── 0003-implement-hexagonal-architecture.md
-    └── 0004-use-docker-containerization.md
-    */
-}
-
-// ADR dokumentieren im Java-Code durch Kommentare
-public class PaymentService {
-    /**
-     * ADR 0002: Datenbankwahl PostgreSQL
-     * 
-     * Kontext: Persistent Layer für Zahlungsdaten
-     * Entscheidung: Nutze PostgreSQL statt MongoDB
-     * Begründung: ACID-Transaktionen, Datenintegrität kritisch
-     * 
-     * Siehe: adr/0002-use-postgresql-for-persistence.md
-     */
-    public void processPayment(Payment payment) {
-        // Implementierung
+// Beispiel-Implementierung der Entscheidung:
+@SpringBootApplication
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    
+    @Autowired
+    private UserService userService;
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.findById(id));
+    }
+    
+    @PostMapping
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(userService.save(userDTO));
     }
 }
 ```
 
 ## Wichtige Punkte
 
-- ADRs dokumentieren das "Warum" hinter Architekturentscheidungen, nicht nur das "Was"
-- Format ist standardisiert (Kontext, Entscheidung, Begründung, Konsequenzen, Alternativen)
-- ADRs werden versioniert und sind Teil der Git-History des Projekts
-- Status-Verwaltung (Proposed, Accepted, Deprecated, Superseded) ermöglicht Nachverfolgung von Änderungen
-- ADRs fördern informierte Entscheidungen und verhindern Wiederholung bereits bewerteter Optionen
+- ADRs dokumentieren das **Warum** hinter technischen Entscheidungen, nicht nur das **Was**
+- Ein ADR sollte kurz und prägnant sein (1-2 Seiten) um tatsächlich gelesen zu werden
+- ADRs sollten im Versionskontrollsystem (Git) zusammen mit dem Code gespeichert werden (z.B. `docs/adr/`)
+- Status-Felder ermöglichen es, Entscheidungen zu überdenken und zu deprecaten, wenn sich Bedingungen ändern
+- ADRs fördern asynchrone Kommunikation und Wissensmanagement in agilen Teams
 
 ## Interview-Fragen
 
-### Warum sind ADRs in agilen Projekten wichtiger als in Wasserfallprojekten?
-ADRs sind in agilen Projekten essentiell, weil kontinuierliche Architekturänderungen stattfinden. Sie dokumentieren den Entscheidungsprozess in Echtzeit und ermöglichen es dem Team, schnell auf neue Erkenntnisse zu reagieren. In Wasserfallprojekten wird die Architektur oft vorab festgelegt; in agilen Projekten entsteht sie evolutionär – ADRs halten diese Evolution nachvollziehbar.
+### Was ist der Hauptzweck eines Architecture Decision Records?
+Der Hauptzweck ist, wichtige technische Entscheidungen und deren Rationale zu dokumentieren, damit das implizite Wissen des Teams explizit wird. ADRs helfen neuen Teamkollegen, die Projektgeschichte zu verstehen und ermöglichen es, frühere Entscheidungen nachzuvollziehen und zu hinterfragen.
 
 ---
 
-### Wie unterscheidet sich ein ADR von einer User Story?
-Ein ADR dokumentiert technische oder architektonische Entscheidungen mit Begründung und Konsequenzen, während eine User Story eine Anforderung aus Kundensicht beschreibt. ADRs sind langfristige Referenzdokumente für das Team; User Stories sind Aufgaben zur Erfüllung von Anforderungen. ADRs können sich auf mehrere User Stories auswirken.
+### Welche Abschnitte sollte ein ADR mindestens enthalten?
+Ein ADR sollte folgende Abschnitte enthalten: **Status** (Proposed/Accepted/Deprecated), **Kontext** (Hintergrund und Anforderungen), **Entscheidung** (was wurde beschlossen), **Konsequenzen** (Vor- und Nachteile) und idealerweise **Alternativen** (was wurde nicht gewählt und warum).
 
 ---
 
-### Wie sollte man alte, überwundene ADRs handhaben?
-Alte ADRs sollten niemals gelöscht werden. Stattdessen markiert man sie als "Superseded" oder "Deprecated" und verlinkt die neue ADR, die sie ersetzt. Dies bewahrt die Projektgeschichte, hilft neuen Team-Mitgliedern zu verstehen, warum frühere Entscheidungen getroffen wurden, und verhindert, dass das Team dieselben Diskussionen erneut führt.
+### Wie unterstützen ADRs agile Arbeitsweise?
+ADRs unterstützen Agilität durch asynchrone Kommunikation, bessere Wissensverteilung im Team und dokumentierte Entscheidungsfindung. Sie ermöglichen es Teams, schneller Entscheidungen zu treffen, diese zu kommunizieren und später zu überdenken, wenn neue Informationen verfügbar sind oder sich Anforderungen ändern.
 
 <style>
 .meta {
