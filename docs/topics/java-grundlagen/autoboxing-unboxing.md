@@ -2,144 +2,89 @@
 outline: deep
 ---
 
-# Autoboxing / Unboxing
+# Autoboxing & Unboxing
 
 <div class="meta">
-  <span class="difficulty easy">🟢 Einstieg</span>
-  <span class="status">bearbeitet</span>
+  <span class="difficulty easy">🟢 Einfach</span>
+  <span class="status">Bearbeitet ☑️</span>
+  <span class="date">31.03.2026</span>
 </div>
 
 ---
 
-## Notizen
+## Zusammenfassung
 
-Autoboxing ist die automatische Konvertierung eines primitiven Typs in sein Wrapper-Objekt.
-Unboxing ist das Gegenteil: ein Wrapper-Objekt wird automatisch in den primitiven Typ zurückgewandelt.
+> **Autoboxing** ist die automatische Konvertierung von primitiven Datentypen in ihre Wrapper-Objekte (z.B. `int` → `Integer`). **Unboxing** ist der umgekehrte Prozess. Dies vereinfacht die Arbeit mit Collections und generischen Typen erheblich.
 
-In Java gibt es 8 primitive Datentypen und jeder dieser Typen hat eine zugehörige Wrapper-Klasse:
+## Kernkonzept
 
-| Primitiv  | Wrapper     |
-|-----------|-------------|
-| `byte`    | `Byte`      |
-| `short`   | `Short`     |
-| `int`     | `Integer`   |
-| `long`    | `Long`      |
-| `float`   | `Float`     |
-| `double`  | `Double`    |
-| `boolean` | `Boolean`   |
-| `char`    | `Character` |
+**Autoboxing** findet statt, wenn ein primitiver Wert an eine Stelle kommt, wo ein Objekt erwartet wird. Der Compiler wandelt den Wert automatisch in die entsprechende Wrapper-Klasse um.
 
-Wrapper werden gebraucht, weil Collections wie `List<Integer>` keine primitiven Typen akzeptieren (Generics funktionieren nur mit Objekten).
+**Unboxing** ist der umgekehrte Prozess: Ein Wrapper-Objekt wird automatisch in seinen primitiven Wert umgewandelt. Dies geschieht z.B. bei Zuweisungen oder arithmetischen Operationen.
 
-#### **Autoboxing**: primitiv → Objekt
+Verfügbare Wrapper-Klassen: `Integer`, `Long`, `Double`, `Float`, `Boolean`, `Byte`, `Short`, `Character`
+
+## Code-Beispiel
+
 ```java
-int zahl = 42;
-Integer boxed = zahl; // Autoboxing: int → Integer
+// Autoboxing: primitiv → Objekt
+int primitive = 42;
+Integer boxed = primitive;  // Automatisch in Integer konvertiert
 
-List<Integer> liste = new ArrayList<>();
-liste.add(5); // Autoboxing: int 5 → Integer.valueOf(5)
-```
-Der Compiler wandelt das intern zu `Integer.valueOf(42)` um.
+// Unboxing: Objekt → primitiv
+Integer wrapped = 100;
+int unboxed = wrapped;      // Automatisch ausgepackt
 
-#### **Unboxing**: Objekt → primitiv
-```java
-Integer boxed = Integer.valueOf(100);
-int unboxed = boxed; // Unboxing: Integer → int
+// In Collections
+List<Integer> numbers = new ArrayList<>();
+numbers.add(5);             // Autoboxing: 5 wird zu Integer(5)
 
+Integer first = numbers.get(0);  // Unboxing nicht nötig (bleibt Integer)
+int value = numbers.get(0);      // Unboxing: Integer wird zu int
+
+// Arithmetische Operationen
 Integer a = 10;
-int summe = a + 5; // Unboxing: a wird zu int für die Addition
-```
-Der Compiler wandelt das intern zu `boxed.intValue()` um.
-
----
-
-### Wichtige Fallstricke
-
-#### NullPointerException beim Unboxing
-```java
-Integer x = null;
-int y = x; // NullPointerException! null.intValue() schlägt fehl
-```
-Wrapper-Klassen können `null` enthalten, primitive Typen jedoch nicht.
-Deshalb immer auf `null` prüfen, bevor ein Wrapper-Objekt in einen primitiven Typ umgewandelt wird.
-
-#### `==` vs `equals()` bei Wrapper-Objekten
-```java
-Integer a = 200;
-Integer b = 200;
-System.out.println(a == b);      // false! (verschiedene Objekte)
-System.out.println(a.equals(b)); // true  (gleicher Wert)
+Integer b = 20;
+int sum = a + b;            // Beide werden ungeboxed, dann addiert
 ```
 
-`==` vergleicht bei Objekten die Referenz (Speicheradresse), nicht den Wert.
-Deshalb immer `equals()` verwenden, wenn Wrapper-Werte verglichen werden sollen.
+## Wichtige Punkte
 
-> **Achtung – Integer Cache:** `Integer.valueOf()` cached Werte von -128 bis 127.
-> In diesem Bereich liefert `==` zufällig `true`, weil beide Variablen
-> auf dasselbe gecachte Objekt zeigen — außerhalb davon nicht mehr.
-```java
-Integer a = 127;
-Integer b = 127;
-System.out.println(a == b); // true  (Cache!)
+- Autoboxing/Unboxing wurde ab **Java 5** eingeführt (vorher manuelle Konvertierung nötig)
+- Der Compiler führt die Konvertierung durch — zur Laufzeit erfolgt der Aufruf von `Integer.valueOf()` oder `intValue()`
+- **NullPointerException-Risiko**: Unboxing von `null` wirft sofort eine NPE
+- Performance-Impact: Wrapper-Objekte verbrauchen mehr Speicher als primitive Typen
+- Autoboxing funktioniert auch in **Methodenaufrufen** und **Zuweisungen** automatisch
 
-Integer c = 128;
-Integer d = 128;
-System.out.println(c == d); // false (verschiedene Objekte)
-```
+## Klassische Fragen
 
-#### Performance
-```java
-Long summe = 0L;
-for (int i = 0; i < 1_000_000; i++) {
-    summe += i; // Ständiges Boxing/Unboxing → langsam!
-}
-```
-In performance-kritischen Loops lieber `long` statt `Long` verwenden.
-Jedes Boxing erzeugt ein neues Objekt auf dem Heap — bei Millionen von Iterationen ist das spürbar.
+### Warum brauchen wir Autoboxing überhaupt?
+
+Collections wie `ArrayList<Integer>` können nur Objekte speichern, keine primitiven Typen. Autoboxing ermöglicht eine nahtlose Übergabe primitiver Werte, ohne manuell `new Integer(42)` schreiben zu müssen.
 
 ---
 
-## Interview-Fragen
+### Was passiert beim Unboxing von `null`?
 
-### Was ist Autoboxing und Unboxing?
-
-**Antwort:** Autoboxing ist die automatische Umwandlung eines primitiven Typs in die entsprechende Wrapper-Klasse (`int` → `Integer`). Unboxing ist das Gegenteil: die Wrapper-Klasse wird automatisch in den primitiven Typ zurückgewandelt (`Integer` → `int`). Beides erledigt der Compiler im Hintergrund – aus `Integer i = 42` wird intern `Integer.valueOf(42)`, aus `int x = i` wird `i.intValue()`.
+Es wird eine `NullPointerException` geworfen. Das ist ein häufiger Bug: `Integer x = null; int y = x;` crasht zur Laufzeit.
 
 ---
 
-### Warum existieren Wrapper-Klassen überhaupt?
+### Sollte ich Wrapper-Klassen für Performance-kritische Code-Teile nutzen?
 
-**Antwort:** Generics in Java funktionieren nur mit Objekten, nicht mit primitiven Typen. Deshalb braucht man z. B. `List<Integer>` statt `List<int>`. Außerdem bieten Wrapper-Klassen nützliche Hilfsmethoden wie `Integer.parseInt()`, `Integer.MAX_VALUE` oder `Integer.toBinaryString()`, die bei primitiven Typen nicht verfügbar sind.
-
----
-
-### Was passiert, wenn ein `null`-Wrapper ungeboxed wird?
-
-**Antwort:** Es wird eine `NullPointerException` geworfen. Der Compiler wandelt z. B. `int y = x` intern in `x.intValue()` um — wenn `x` null ist, schlägt das fehl. Deshalb immer auf `null` prüfen, wenn Wrapper-Objekte aus Collections oder Methoden-Rückgaben kommen.
+Nein. Primitive Typen sind deutlich schneller und speichereffizienter. Wrapper-Klassen nutzen nur bei Collections oder wenn die API es verlangt.
 
 ---
 
-### Was ist der Integer Cache und welche Werte sind betroffen?
+### Sind `Integer a = 5;` und `int a = 5;` identisch?
 
-**Antwort:** `Integer.valueOf()` cached Objekte im Bereich **-128 bis 127**. In diesem Bereich zeigen zwei `Integer`-Variablen mit demselben Wert auf dasselbe Objekt im Speicher, weshalb `==` dort `true` liefert. Außerhalb dieses Bereichs werden neue Objekte erstellt, und `==` liefert `false` — auch wenn der Wert gleich ist. Das ist ein klassischer Interview-Stolperstein.
-
----
-
-### Warum sollte man bei Wrapper-Objekten `equals()` statt `==` verwenden?
-
-**Antwort:** `==` vergleicht Referenzen (Speicheradressen), nicht Werte. Zwei `Integer`-Objekte mit demselben Wert können unterschiedliche Objekte im Heap sein, weshalb `==` dann `false` liefert. `equals()` vergleicht den tatsächlichen Wert und ist daher die sichere Wahl. Im Cache-Bereich (-128 bis 127) wäre `==` zufällig korrekt — aber darauf sollte man sich nie verlassen.
+Nein. Das erste ist ein Objekt (mit Overhead), das zweite ist ein primitiver Wert im Stack. Funktional ähnlich, aber unterschiedliche Performance und Memory-Footprint.
 
 ---
 
-### Welche Performance-Probleme kann Autoboxing verursachen?
+## Wusstest du schon?
 
-**Antwort:** Jedes Boxing erzeugt ein neues Objekt auf dem Heap, was Garbage-Collection-Druck erzeugt. In Loops mit vielen Iterationen kann das erheblich langsamer sein als die Verwendung primitiver Typen. Faustregel: In performance-kritischem Code `int`, `long`, `double` bevorzugen und Wrapper nur dort einsetzen, wo sie wirklich nötig sind (Collections, Generics).
-
----
-
-### Wo genau passiert Autoboxing — im Compiler oder zur Laufzeit?
-
-**Antwort:** Der Compiler fügt die Boxing- und Unboxing-Aufrufe bereits beim Kompilieren ein (`Integer.valueOf()` bzw. `.intValue()`). Zur Laufzeit gibt es kein "Autoboxing" mehr — im Bytecode sind es ganz normale Methodenaufrufe. Man kann das mit `javap -c` im dekompilierten Bytecode sehen.
+Die **Integer-Cache**: Java cached Integer-Objekte von `-128` bis `127`. Deshalb ist `Integer.valueOf(5) == Integer.valueOf(5)` `true`, aber `Integer.valueOf(200) == Integer.valueOf(200)` `false`! Das ist kein Autoboxing-Bug, sondern Feature zur Performance-Optimierung.
 
 <style>
 .meta {
@@ -147,6 +92,7 @@ Jedes Boxing erzeugt ein neues Objekt auf dem Heap — bei Millionen von Iterati
   gap: 0.75rem;
   margin-top: 0.5rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 .meta span {
   display: inline-block;
@@ -170,7 +116,12 @@ Jedes Boxing erzeugt ein neues Objekt auf dem Heap — bei Millionen von Iterati
   color: #fca5a5;
 }
 .status {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+.date {
   background: #2a2a2a;
   color: #aaa;
+  font-size: 0.8em;
 }
 </style>
